@@ -16,8 +16,7 @@ pipeline {
             steps {
                 git branch: 'main', url: "${env.GIT_REPO}"
             }
-        }
-        
+        }     
         stage('Building Docker Image of helloService') {
             steps { 
                 script {
@@ -42,13 +41,13 @@ pipeline {
             }
         }
         
-        stage('Push the Image to DockerHub') {
+        stage('Push the Image to DockerHub Repository') {
             steps {
                 script {
                     docker.withRegistry('', "${env.DOCKER_CRED_ID}") {
-                        docker.image("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:hello-service-${env.BUILD_ID}").push()
-                        docker.image("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:profile-service-${env.BUILD_ID}").push()
-                        docker.image("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:frontend-${env.BUILD_ID}").push()
+                        docker.image("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:${env.BUILD_ID}").push()
+                        docker.image("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:${env.BUILD_ID}").push()
+                        docker.image("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:${env.BUILD_ID}").push()
                     }
                 }
             }
