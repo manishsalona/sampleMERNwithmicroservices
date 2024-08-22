@@ -16,35 +16,34 @@ pipeline {
             steps {
                 git branch: 'main', url: "${env.GIT_REPO}"
             }
-        }     
+        }
+
         stage('Building Docker Image of helloService') {
             agent { label 'Jenkins-Slave' }
             steps {
                 echo 'Running on the slave node...'
-
-            steps { 
                 script {
                     docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:hello-service-${env.BUILD_ID}", "${env.DOCKERFILE_HELLO}")
                 }
             }
         }
-        
+
         stage('Building Docker Image of profileService') {
-            steps { 
+            steps {
                 script {
                     docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:profile-service-${env.BUILD_ID}", "${env.DOCKERFILE_PROFILE}")
                 }
             }
         }
-        
+
         stage('Building Docker Image of Frontend') {
-            steps { 
+            steps {
                 script {
                     docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:frontend-${env.BUILD_ID}", "${env.DOCKERFILE_FRONTEND}")
                 }
             }
         }
-        
+
         stage('Push the Image to DockerHub Repository') {
             steps {
                 script {
