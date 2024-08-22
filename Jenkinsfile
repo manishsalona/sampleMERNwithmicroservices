@@ -18,6 +18,10 @@ pipeline {
             }
         }     
         stage('Building Docker Image of helloService') {
+            agent { label 'Jenkins-Slave' }
+            steps {
+                echo 'Running on the slave node...'
+
             steps { 
                 script {
                     docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:hello-service-${env.BUILD_ID}", "${env.DOCKERFILE_HELLO}")
